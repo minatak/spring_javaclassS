@@ -174,12 +174,17 @@ public class StudyServiceImpl implements StudyService {
 
 	@Override
 	public ArrayList<CrimeVO> getYearPoliceCheck(int year, String policeArea, String yearOrder) {
-		return studyDAO.yearPoliceCheck(year, policeArea, yearOrder);
+		return studyDAO.getYearPoliceCheck(year, policeArea, yearOrder);
 	}
 
 	@Override
 	public int setDeleteCrimeDate(int year) {
 		return studyDAO.setDeleteCrimeDate(year);
+	}
+
+	@Override
+	public ArrayList<CrimeVO> getListCrimeDate(int year) {
+		return studyDAO.getListCrimeDate(year);
 	}
 	
 }

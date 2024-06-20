@@ -27,5 +27,7 @@ public interface StudyService {
 
 	public ArrayList<CrimeVO> getYearPoliceCheck(int year, String policeArea, String yearOrder);
 
+	public ArrayList<CrimeVO> getListCrimeDate(int year);
+
 	
 }

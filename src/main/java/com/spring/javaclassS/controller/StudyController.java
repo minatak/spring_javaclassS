@@ -159,8 +159,15 @@ public class StudyController {
 	public ArrayList<CrimeVO> yearPoliceCheckPost(int year, String policeArea, String yearOrder) {
 		if(yearOrder.equals("a")) yearOrder = "asc";
 		else yearOrder = "desc";
-		
+		// ArrayList<CrimeVO> vos = studyService.getYearPoliceCheck(year, policeArea, yearOrder);
+		// System.out.println("vos : " + vos);
 		return studyService.getYearPoliceCheck(year, policeArea, yearOrder);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/restapi/listCrimeDate", method = RequestMethod.POST)
+	public ArrayList<CrimeVO> listCrimeDatePost(int year) {
+		return studyService.getListCrimeDate(year);
 	}
 	
 }

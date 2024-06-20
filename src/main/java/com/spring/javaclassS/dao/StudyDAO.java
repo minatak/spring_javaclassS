@@ -19,8 +19,10 @@ public interface StudyDAO {
 
 	public void setSaveCrimeData(@Param("vo") CrimeVO vo);
 
-	public ArrayList<CrimeVO> yearPoliceCheck(@Param("year") int year, @Param("policeArea") String policeArea, @Param("yearOrder") String yearOrder);
+	public ArrayList<CrimeVO> getYearPoliceCheck(@Param("year") int year, @Param("policeArea") String policeArea, @Param("yearOrder") String yearOrder);
 
 	public int setDeleteCrimeDate(@Param("year") int year);
+
+	public ArrayList<CrimeVO> getListCrimeDate(@Param("year") int year);
 
 }

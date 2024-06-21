@@ -13,3 +13,7 @@ create table crime (
 desc crime;
 
 select * from crime order by year, police;
+
+select year,sum(robbery) as totRobbery,sum(murder) as totMurder,sum(theft) as totTheft,sum(violence) as totViolence,
+    avg(robbery) as avgRobbery,avg(murder) as avgMurder,avg(theft) as avgTheft,avg(violence) as avgViolence
+    from crime where year = 2022 and police like '서울%';

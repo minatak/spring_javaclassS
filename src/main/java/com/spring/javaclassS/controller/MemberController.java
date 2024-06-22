@@ -99,6 +99,22 @@ public class MemberController {
 		}
 		return "0";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/memberSearchMid", method = RequestMethod.POST)
+	public String memberSearchMidPost(String name, String email) throws MessagingException {
+		MemberVO vo = memberService.getMemberMidSearch(name);
+		if(vo != null && vo.getEmail().equals(email)) {
+			// 정보확인 후 정보가 맞으면 회원의 아이디를 메일로 전송처리한다.
+
+			String title = "회원님의 아이디입니다 :)";
+			String mailFlag = "아이디 : " + vo.getMid();
+			String res = mailSend(email, title, mailFlag);
+			
+			if(res == "1") return "1";
+		}
+		return "0";
+	}
 
 	// 메일 전송하기(아이디찾기, 비밀번호 찾기)
 	private String mailSend(String toMail, String title, String mailFlag) throws MessagingException {
@@ -123,9 +139,6 @@ public class MemberController {
 		messageHelper.setText(content, true);
 		
 		// 본문에 기재될 그림파일의 경로를 별도로 표시시켜준다. 그런후 다시 보관함에 저장한다.
-		//FileSystemResource file = new FileSystemResource("D:\\javaclass\\springframework\\works\\javaclassS\\src\\main\\webapp\\resources\\images\\main.jpg");
-		
-		//request.getSession().getServletContext().getRealPath("/resources/images/main.jpg");
 		FileSystemResource file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/images/main.jpg"));
 		messageHelper.addInline("main.jpg", file);
 		

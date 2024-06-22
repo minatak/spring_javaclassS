@@ -35,5 +35,10 @@ public class MemberServiceImpl implements MemberService {
 	public void setMemberPasswordUpdate(String mid, String pwd) {
 		memberDAO.setMemberPasswordUpdate(mid, pwd);
 	}
+
+	@Override
+	public MemberVO getMemberMidSearch(String name) {
+		return memberDAO.getMemberMidSearch(name);
+	}
 	
 }

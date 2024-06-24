@@ -40,8 +40,22 @@ public class DbtestServiceImpl implements DbtestService {
 	}
 
 	@Override
-	public UserVO getIdcheck(String mid) {
-		return dbtestDAO.getIdcheck(mid);
+	public UserVO getUserIdCheck(String mid) {
+		return dbtestDAO.getUserIdCheck(mid);
 	}
 
+	@Override
+	public ArrayList<String> getDbtestMidList() {
+		return dbtestDAO.getDbtestMidList();
+	}
+
+	@Override
+	public ArrayList<String> getDbtestAddressList() {
+		return dbtestDAO.getDbtestAddressList();
+	}
+
+	@Override
+	public ArrayList<UserVO> getUserAddressCheck(String address) {
+		return dbtestDAO.getUserAddressCheck(address);
+	}
 }

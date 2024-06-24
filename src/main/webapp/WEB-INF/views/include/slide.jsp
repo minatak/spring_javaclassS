@@ -23,7 +23,8 @@
       <p><b>Thank you, Chicago - A night we won't forget.</b></p>    
     </div>
   </div>
-  <script>
+  
+<script>
 	// Automatic Slideshow - change image every 4 seconds
 	var myIndex = 0;
 	carousel();

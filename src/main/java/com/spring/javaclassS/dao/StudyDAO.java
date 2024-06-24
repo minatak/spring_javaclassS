@@ -9,20 +9,18 @@ import com.spring.javaclassS.vo.UserVO;
 
 public interface StudyDAO {
 
-	public ArrayList<UserVO> getNameList();
-
-	public ArrayList<UserVO> getUserList(@Param("name") String name, @Param("address") String address);
-
 	public UserVO getUserMidSearch(@Param("mid") String mid);
 
 	public ArrayList<UserVO> getUserMidList(@Param("mid") String mid);
 
-	public void setSaveCrimeData(@Param("vo") CrimeVO vo);
+	public void setSaveCrimeDate(@Param("vo") CrimeVO vo);
 
-	public ArrayList<CrimeVO> getYearPoliceCheck(@Param("year") int year, @Param("policeArea") String policeArea, @Param("yearOrder") String yearOrder);
-
-	public int setDeleteCrimeDate(@Param("year") int year);
+	public void setDeleteCrimeDate(@Param("year") int year);
 
 	public ArrayList<CrimeVO> getListCrimeDate(@Param("year") int year);
+
+	public ArrayList<CrimeVO> getYearPoliceCheck(@Param("year") int year, @Param("police") String police, @Param("yearOrder") String yearOrder);
+
+	public CrimeVO getAnalyzeTotal(@Param("year") int year, @Param("police") String police);
 
 }

@@ -1,9 +1,17 @@
 package com.spring.javaclassS.service;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.javaclassS.dao.StudyDAO;
 import com.spring.javaclassS.vo.CrimeVO;
@@ -11,10 +19,10 @@ import com.spring.javaclassS.vo.UserVO;
 
 @Service
 public class StudyServiceImpl implements StudyService {
-
+	
 	@Autowired
 	StudyDAO studyDAO;
-	
+
 	@Override
 	public String[] getCityStringArray(String dodo) {
 		String[] strArray = new String[100];
@@ -133,31 +141,6 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public ArrayList<UserVO> getNameList() {
-		return studyDAO.getNameList();
-	}
-
-	@Override
-	public ArrayList<String> getNameArrayList(String name) {
-		ArrayList<String> vos = new ArrayList<String>();
-		
-		vos.add("서울");
-		vos.add("인천");
-		vos.add("청주");
-		vos.add("부산");
-		vos.add("대전");
-		vos.add("광주");
-		vos.add("제주");
-		
-		return vos;
-	}
-
-	@Override
-	public ArrayList<UserVO> getUserList(String name, String address) {
-		return studyDAO.getUserList(name, address);
-	}
-
-	@Override
 	public UserVO getUserMidSearch(String mid) {
 		return studyDAO.getUserMidSearch(mid);
 	}
@@ -168,23 +151,62 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public void setSaveCrimeData(CrimeVO vo) {
-		studyDAO.setSaveCrimeData(vo);
+	public void setSaveCrimeDate(CrimeVO vo) {
+		studyDAO.setSaveCrimeDate(vo);
 	}
 
 	@Override
-	public ArrayList<CrimeVO> getYearPoliceCheck(int year, String policeArea, String yearOrder) {
-		return studyDAO.getYearPoliceCheck(year, policeArea, yearOrder);
-	}
-
-	@Override
-	public int setDeleteCrimeDate(int year) {
-		return studyDAO.setDeleteCrimeDate(year);
+	public void setDeleteCrimeDate(int year) {
+		studyDAO.setDeleteCrimeDate(year);
 	}
 
 	@Override
 	public ArrayList<CrimeVO> getListCrimeDate(int year) {
 		return studyDAO.getListCrimeDate(year);
 	}
-	
+
+	@Override
+	public ArrayList<CrimeVO> getYearPoliceCheck(int year, String police, String yearOrder) {
+		return studyDAO.getYearPoliceCheck(year, police, yearOrder);
+	}
+
+	@Override
+	public CrimeVO getAnalyzeTotal(int year, String police) {
+		return studyDAO.getAnalyzeTotal(year, police);
+	}
+
+	@Override
+	public int fileUpload(MultipartFile fName, String mid) {
+		int res = 0;
+		
+		// 파일이름 중복처리를 위해 UUID객체 활용
+		UUID uid = UUID.randomUUID();
+		String oFileName = fName.getOriginalFilename();
+		String sFileName = mid + "_" + uid.toString().substring(0,8) + "_" + oFileName;
+		
+		// 서버에 파일 올리기
+		try {
+			writeFile(fName, sFileName);
+			res = 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return res;
+	}
+
+	private void writeFile(MultipartFile fName, String sFileName) throws IOException {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/fileUpload/");
+		
+		FileOutputStream fos = new FileOutputStream(realPath + sFileName);
+		
+		//fos.write(fName.getBytes());
+		if(fName.getBytes().length != -1) {
+			fos.write(fName.getBytes());
+		}
+		fos.flush();
+		fos.close();
+	}
+
 }

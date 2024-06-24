@@ -1,15 +1,18 @@
 package com.spring.javaclassS.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.spring.javaclassS.service.DbtestService;
+import com.spring.javaclassS.service.UserService;
 import com.spring.javaclassS.vo.UserVO;
 
 @Controller
@@ -63,17 +66,17 @@ public class DbtestController {
 	}
 	
 	@RequestMapping(value = "/dbtestWindow", method = RequestMethod.GET)
-	public String dbtestWindowGet(Model model, String mid) {
-		System.out.println("mid : " + mid);
-		UserVO vo = dbtestService.getIdcheck(mid);
-		System.out.println("vo : " + vo);
+	public String dbtestWindowGet(String mid, Model model) {
+		UserVO vo = dbtestService.getUserIdCheck(mid);
+		
 		String idCheck = "";
+
 		if(vo != null) idCheck = "NO";
 		else idCheck = "OK";
 		
-		model.addAttribute("idCheck", idCheck);
 		model.addAttribute("mid", mid);
-		return "user/dbtestIdCheckWindow";
+		model.addAttribute("idCheck", idCheck);
+		
+		return "user/dbtestWindow";
 	}
-	
 }

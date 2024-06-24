@@ -30,7 +30,7 @@ public class GuestController {
 		int startIndexNo = (pag - 1) * pageSize;
 		int curScrStartNo = totRecCnt - startIndexNo;
 		
-		int blockSize = 5;
+		int blockSize = 3;
 		int curBlock = (pag - 1) / blockSize;
 		int lastBlock = (totPage - 1) / blockSize;
 		

@@ -1,5 +1,6 @@
 package com.spring.javaclassS.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.javaclassS.service.DbtestService;
 import com.spring.javaclassS.service.StudyService;
 import com.spring.javaclassS.vo.CrimeVO;
 import com.spring.javaclassS.vo.MailVO;
@@ -26,12 +29,16 @@ import com.spring.javaclassS.vo.UserVO;
 @Controller
 @RequestMapping("/study")
 public class StudyController {
-
+	
 	@Autowired
 	StudyService studyService;
 	
 	@Autowired
+	DbtestService dbtestService;
+	
+	@Autowired
 	JavaMailSender mailSender;
+	
 	
 	@RequestMapping(value = "/ajax/ajaxForm", method = RequestMethod.GET)
 	public String ajaxFormGet() {
@@ -98,29 +105,30 @@ public class StudyController {
 	
 	@RequestMapping(value = "/ajax/ajaxTest3_4", method = RequestMethod.GET)
 	public String ajaxTest3_4Get(Model model) {
-		ArrayList<UserVO> vos = studyService.getNameList();
-		model.addAttribute("vos", vos);
+		ArrayList<String> midVos = dbtestService.getDbtestMidList();
+		model.addAttribute("midVos", midVos);
 		
+		ArrayList<String> addressVos = dbtestService.getDbtestAddressList();
+		model.addAttribute("addressVos", addressVos);
 		return "study/ajax/ajaxTest3_4";
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/ajax/ajaxTest3_4", method = RequestMethod.POST)
-	public HashMap<Object, Object> ajaxTest3_4Post(String name) {
-		ArrayList<String> vos = studyService.getNameArrayList(name);
-		
-		HashMap<Object, Object> map = new HashMap<Object, Object>();
-		map.put("address", vos);
-		return map;
+	@RequestMapping(value = "/ajax/ajaxTest3_4", method = RequestMethod.POST, produces="application/text; charset=utf-8")
+	public String ajaxTest3_4Post(String mid) {
+		UserVO vo = dbtestService.getUserIdCheck(mid);
+		String str = "<h3>회원정보</h3>";
+		str += "아이디 : " + vo.getMid() + "<br>";
+		str += "성명 : " + vo.getName() + "<br>";
+		str += "나이 : " + vo.getAge() + "<br>";
+		str += "주소 : " + vo.getAddress();
+		return str;
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/ajax/ajaxTest3_4Ok", method = RequestMethod.POST)
-	public ArrayList<UserVO> ajaxTest3_4OkPost(String name, String address) {
-		ArrayList<UserVO> userVos = studyService.getUserList(name, address);
-		
-		System.out.println("userVos : " + userVos);
-		return userVos;
+	@RequestMapping(value = "/ajax/ajaxTest3_5", method = RequestMethod.POST)
+	public ArrayList<UserVO> ajaxTest3_5Post(String address) {
+		return dbtestService.getUserAddressCheck(address);
 	}
 	
 	@ResponseBody
@@ -134,7 +142,7 @@ public class StudyController {
 	public ArrayList<UserVO> ajaxTest4_2Post(String mid) {
 		return studyService.getUserMidList(mid);
 	}
-
+	
 	@RequestMapping(value = "/restapi/restapi", method = RequestMethod.GET)
 	public String restapiGet() {
 		return "study/restapi/restapi";
@@ -152,32 +160,36 @@ public class StudyController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/restapi/saveCrimeData", method = RequestMethod.POST)
-	public void saveCrimeDataPost(CrimeVO vo) {
-		studyService.setSaveCrimeData(vo);
+	@RequestMapping(value = "/restapi/saveCrimeDate", method = RequestMethod.POST)
+	public void saveCrimeDatePost(CrimeVO vo) {
+		studyService.setSaveCrimeDate(vo);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/restapi/deleteCrimeDate", method = RequestMethod.POST)
-	public int deleteCrimeDatePost(int year) {
-		int res = studyService.setDeleteCrimeDate(year);
-		return res;
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/restapi/yearPoliceCheck", method = RequestMethod.POST)
-	public ArrayList<CrimeVO> yearPoliceCheckPost(int year, String policeArea, String yearOrder) {
-		if(yearOrder.equals("a")) yearOrder = "asc";
-		else yearOrder = "desc";
-		// ArrayList<CrimeVO> vos = studyService.getYearPoliceCheck(year, policeArea, yearOrder);
-		// System.out.println("vos : " + vos);
-		return studyService.getYearPoliceCheck(year, policeArea, yearOrder);
+	public void deleteCrimeDatePost(int year) {
+		studyService.setDeleteCrimeDate(year);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/restapi/listCrimeDate", method = RequestMethod.POST)
 	public ArrayList<CrimeVO> listCrimeDatePost(int year) {
 		return studyService.getListCrimeDate(year);
+	}
+	
+	@RequestMapping(value = "/restapi/yearPoliceCheck", method = RequestMethod.POST)
+	public String yearPoliceCheckPost(int year, String police, String yearOrder, Model model) {
+		ArrayList<CrimeVO> vos = studyService.getYearPoliceCheck(year, police, yearOrder);
+		model.addAttribute("vos", vos);
+		
+		CrimeVO analyzeVo = studyService.getAnalyzeTotal(year, police);
+		model.addAttribute("analyzeVo", analyzeVo);
+		
+		model.addAttribute("year", year);
+		model.addAttribute("police", police);
+		model.addAttribute("totalCnt", analyzeVo.getTotMurder()+analyzeVo.getTotRobbery()+analyzeVo.getTotTheft()+analyzeVo.getTotViolence());
+		
+		return "study/restapi/restapiTest4";
 	}
 	
 	@RequestMapping(value = "/mail/mailForm", method = RequestMethod.GET)
@@ -196,7 +208,7 @@ public class StudyController {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
 		
-		// 메일보관함에 작성한 메세지들의 정보를 모두 저장시킨후 작업처리 
+		// 메일보관함에 작성한 메세지들의 정보를 모두 저장시킨후 작업처리...
 		messageHelper.setTo(toMail);			// 받는 사람 메일 주소
 		messageHelper.setSubject(title);	// 메일 제목
 		messageHelper.setText(content);		// 메일 내용
@@ -204,8 +216,8 @@ public class StudyController {
 		// 메세지 보관함의 내용(content)에 , 발신자의 필요한 정보를 추가로 담아서 전송처리한다.
 		content = content.replace("\n", "<br>");
 		content += "<br><hr><h3>javaclass 에서 보냅니다.</h3><hr><br>";
-		content += "<p><img src=\"cid:main.jpg\" width='500px'></p>"; // cid => 예약어. 무조건 이렇게 써야 함.
-		content += "<p>방문하기 : <a href='http://49.142.157.251:9090/javaclassJ17/Main.com'>javaclass</a></p>";
+		content += "<p><img src=\"cid:main.jpg\" width='500px'></p>";
+		content += "<p>방문하기 : <a href='http://49.142.157.251:9090/cjgreen'>javaclass</a></p>";
 		content += "<hr>";
 		messageHelper.setText(content, true);
 		
@@ -215,17 +227,76 @@ public class StudyController {
 		//request.getSession().getServletContext().getRealPath("/resources/images/main.jpg");
 		FileSystemResource file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/images/main.jpg"));
 		messageHelper.addInline("main.jpg", file);
-
+		
 		// 첨부파일 보내기
 		file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/images/chicago.jpg"));
 		messageHelper.addAttachment("chicago.jpg", file);
 		file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/images/sanfran.zip"));
 		messageHelper.addAttachment("sanfran.zip", file);
 		
+		
 		// 메일 전송하기
 		mailSender.send(message);
 		
 		return "redirect:/message/mailSendOk";
 	}
+
+	// 파일 업로드 연습폼 호출하기
+	@RequestMapping(value = "/fileUpload/fileUpload", method = RequestMethod.GET)
+	public String fileUploadGet(HttpServletRequest request, Model model) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/fileUpload");
+		
+		String[] files = new File(realPath).list();
+		
+		model.addAttribute("files", files);
+		model.addAttribute("fileCount", files.length);
+		
+		return "study/fileUpload/fileUpload";
+	}
 	
+	@RequestMapping(value = "/fileUpload/fileUpload", method = RequestMethod.POST)
+	public String fileUploadPost(MultipartFile fName, String mid) {
+		
+		int res = studyService.fileUpload(fName, mid);
+		
+		if(res != 0) return "redirect:/message/fileUploadOk";
+		else  return "redirect:/message/fileUploadNo";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/fileUpload/fileDelete", method = RequestMethod.POST)
+	public String fileDeletePost(HttpServletRequest request, String file) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/fileUpload/");
+		
+		String res = "0";
+		File fName = new File(realPath + file);
+		
+		if(fName.exists()) {
+			fName.delete();
+			res = "1";
+		}
+		
+		return res;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/fileUpload/fileDeleteAll", method = RequestMethod.POST)
+	public String fileDeleteAllPost(HttpServletRequest request, String file) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/fileUpload/");
+		
+		String res = "0";
+		File targetFolder = new File(realPath);
+		if(!targetFolder.exists()) return "0";
+		
+		File[] files = targetFolder.listFiles();
+		
+		if(files.length != 0) {
+			for(File f : files) {
+				if(!f.isDirectory()) f.delete();
+			}
+			res = "1";
+		}
+		
+		return res;
+	}
 }

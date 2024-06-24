@@ -1,5 +1,9 @@
 package com.spring.javaclassS.service;
 
+import java.util.ArrayList;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.spring.javaclassS.vo.MemberVO;
 
 public interface MemberService {
@@ -12,6 +16,16 @@ public interface MemberService {
 
 	public void setMemberPasswordUpdate(String mid, String pwd);
 
-	public MemberVO getMemberMidSearch(String name);
+//	public void setMemberInforUpdate(String mid, int point);
+
+	public int setPwdChangeOk(String mid, String pwd);
+
+	public String fileUpload(MultipartFile fName, String mid);
+
+	public ArrayList<MemberVO> getMemberList(int level);
+
+	public int setMemberUpdateOk(MemberVO vo);
+
+	public void setMemberInforUpdate(String mid, int todayCnt, int point);
 
 }

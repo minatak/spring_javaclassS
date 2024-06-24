@@ -8,37 +8,30 @@
   <title>mailForm.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
   <style>
-  	th {
-  		background-color : #eee;
-  	}
+    th {
+      background-color: #eee;
+      text-align: center;
+    }
   </style>
-  <script>
-  	'use strict';
-  	
-  	function jusorokCheck() {
-			
-		}
-  
-  </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
 <div class="container">
-  <h2>메 일 보 내 기</h2>
+  <h2 class="text-center">메 일 보 내 기</h2>
   <p>(받는 사람의 메일주소를 정확히 입력하셔야 합니다.)</p>
   <form name="myform" method="post">
     <table class="table table-bordered">
       <tr>
         <th>받는사람</th>
         <td>
-        	<div class="input-group">
-        		<input type="text" name="toMail" placeholder="받는사람 메일주소를 입력하세요" autofocus required class="form-control" />
-        		<div class="input-group-append">
-        			<input type="button" value="주소록" onclick="jusorokCheck()" class="btn btn-success" />
-        		</div>
-       		</div>
+          <div class="input-group">
+            <input type="text" name="toMail" placeholder="받는사람 메일주소를 입력하세요" autofocus required class="form-control" />
+            <div class="input-group-append">
+              <input type="button" value="주소록" onclick="jusorokCheck()" class="btn btn-success"/>
+            </div>
+          </div>
         </td>
       </tr>
       <tr>

@@ -16,6 +16,12 @@ public interface DbtestService {
 
 	public int setDbtestUpdateOk(UserVO vo);
 
-	public UserVO getIdcheck(String mid);
+	public UserVO getUserIdCheck(String mid);
+
+	public ArrayList<String> getDbtestMidList();
+
+	public ArrayList<String> getDbtestAddressList();
+
+	public ArrayList<UserVO> getUserAddressCheck(String address);
 
 }

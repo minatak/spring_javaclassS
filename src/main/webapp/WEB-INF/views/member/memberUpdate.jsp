@@ -83,7 +83,6 @@
     	}
     	else {
     		myform.email.value = email;
-    		myform.email.value = email;
     		myform.tel.value = tel;
     		myform.address.value = address;
     		
@@ -109,7 +108,7 @@
     		nickCheckSw = 1;
     		
     		$.ajax({
-    			url  : "${ctp}/MemberNickCheck.mem",
+    			url  : "${ctp}/member/memberNickCheck",
     			type : "get",
     			data : {nickName : nickName},
     			success:function(res) {
@@ -149,8 +148,8 @@
 <jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
 <div class="container">
-  <form name="myform" method="post" action="${ctp}/MemberUpdateOk.mem" class="was-validated" enctype="multipart/form-data">
-    <h2>회 원 가 입</h2>
+  <form name="myform" method="post" class="was-validated" enctype="multipart/form-data">
+    <h2>회 원 정 보 수 정</h2>
     <br/>
     <div>아이디 : ${sMid}</div>
     <div class="form-group">
@@ -278,7 +277,7 @@
       </div>
     </div>
     <div  class="form-group">
-      회원 사진(파일용량:2MByte이내) : <img src="${ctp}/images/member/${vo.photo}" width="100px"/>
+      회원 사진(파일용량:2MByte이내) :  
       <input type="file" name="fName" id="file" onchange="imgCheck(this)" class="form-control-file border"/>
       <div><img id="photoDemo" width="100px"/></div>
     </div>

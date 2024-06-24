@@ -82,7 +82,6 @@
 			}
 			
 			// 전송전에 파일에 관련된 사항들을 체크해준다.
-			/*
 			let fName = document.getElementById("file").value;
 			if(fName.trim() != "") {
 				let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
@@ -98,8 +97,7 @@
 					return false;
 				}
 			}
-			else return false;			
-    	*/
+			//else myform.fName.value = 'noimage.jpg';			
 			
 			// 아이디/닉네임 중복체크
     	if(idCheckSw == 0) {
@@ -206,7 +204,7 @@
 <p><br/></p>
 <div class="container">
   <!-- <form name="myform" method="post" class="was-validated" enctype="multipart/form-data"> -->
-  <form name="myform" method="post" class="was-validated">
+  <form name="myform" method="post" class="was-validated" enctype="multipart/form-data">
     <h2>회 원 가 입</h2>
     <br/>
     <div class="form-group">
@@ -387,6 +385,7 @@
     <input type="hidden" name="email" />
     <input type="hidden" name="tel" />
     <input type="hidden" name="address" />
+    <!-- <input type="hidden" name="photo" /> -->
   </form>
 </div>
 <p><br/></p>

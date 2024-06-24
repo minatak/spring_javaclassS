@@ -18,6 +18,12 @@ public interface DbtestDAO {
 
 	public int setDbtestUpdateOk(@Param("vo") UserVO vo);
 
-	public UserVO getIdcheck(@Param("mid") String mid);
+	public UserVO getUserIdCheck(@Param("mid") String mid);
+
+	public ArrayList<String> getDbtestMidList();
+
+	public ArrayList<String> getDbtestAddressList();
+
+	public ArrayList<UserVO> getUserAddressCheck(@Param("address") String address);
 
 }

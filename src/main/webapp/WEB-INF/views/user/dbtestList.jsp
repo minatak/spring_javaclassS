@@ -5,7 +5,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>userList.jsp(조회,입력,삭제,수정)</title>
+  <title>dbtestList.jsp(조회,입력,삭제,수정)</title>
   <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
   <style>
     th {
@@ -59,8 +59,8 @@
     	let mid = myform.mid.value;
     	
     	let url = "${ctp}/dbtest/dbtestWindow?mid="+mid;
-    	window.open(url, "dbtestWindow", "width=500px, height=250px;");
-		}
+    	window.open(url, "dbtestWindow", "width=500px,height=250px");
+    }
   </script>
 </head>
 <body>
@@ -68,7 +68,7 @@
 <jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
 <div class="container">
-  <h2>회원 리스트</h2>
+  <h2 class="text-center">회원 리스트</h2>
   <hr/>
   <div class="mb-2">
 	  <input type="button" value="회원가입창보이기" id="btnShow" class="btn btn-success" />
@@ -80,12 +80,12 @@
         <tr>
           <th>아이디</th>
           <td>
-	          <div class="input-group">
-		          <input type="text" name="mid" id="mid" value="atom1234" class="form-control" /> 
-		          <div class="input-group-append">
-		          	<input type="button" onclick="idCheck()" value="아이디중복체크" class="btn btn-info"/> 
-		          </div>
-	          </div>
+            <div class="input-group">
+            	<input type="text" name="mid" value="atom1234" class="form-control" />
+            	<div class="input-group-append">
+            	  <input type="button" value="아이디중복체크" onclick="idCheck()" class="btn btn-success"/>
+            	</div>
+            </div>
           </td>
         </tr>
         <tr>

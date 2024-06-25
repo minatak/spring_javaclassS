@@ -113,12 +113,32 @@ public class MessageController {
 			model.addAttribute("url", "/study/fileUpload/fileUpload");
 		}
 		else if(msgFlag.equals("memberUpdateOk")) {
-			model.addAttribute("msg", "회원정보 수정이 완료되었습니다.");
-			model.addAttribute("url", "/member/memberMain");
+			model.addAttribute("msg", "회원 정보가 변경되었습니다.");
+			model.addAttribute("url", "/member/memberUpdate");
 		}
 		else if(msgFlag.equals("memberUpdateNo")) {
-			model.addAttribute("msg", "회원정보 수정에 실패했습니다.");
+			model.addAttribute("msg", "회원 정보 변경실패~~");
 			model.addAttribute("url", "/member/memberPwdCheck/i");
+		}
+		else if(msgFlag.equals("adminNo")) {
+			model.addAttribute("msg", "관리자만 접속하실수 있습니다.");
+			model.addAttribute("url", "/");
+		}
+		else if(msgFlag.equals("memberNo")) {
+			model.addAttribute("msg", "회원 로그인후 사용하세요");
+			model.addAttribute("url", "/member/memberLogin");
+		}
+		else if(msgFlag.equals("memberLevelNo")) {
+			model.addAttribute("msg", "회원 등급을 확인하세요.");
+			model.addAttribute("url", "/member/memberMain");
+		}
+		else if(msgFlag.equals("boardInputOk")) {
+			model.addAttribute("msg", "게시글이 등록되었습니다.");
+			model.addAttribute("url", "/board/boardList");
+		}
+		else if(msgFlag.equals("boardInputNo")) {
+			model.addAttribute("msg", "게시글 등록 실패~~");
+			model.addAttribute("url", "/board/boardInput");
 		}
 		
 		

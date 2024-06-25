@@ -10,20 +10,37 @@
 		select * from user where mid like concat('%',#{mid},'%') order by idx desc;
 	</select>
 	
-	<select id="getIdcheck" resultType="com.spring.javaclassS.vo.UserVO">
+	<select id="getUserIdCheck" resultType="com.spring.javaclassS.vo.UserVO">
 		select * from user where mid = #{mid};
 	</select>
 	
+	<select id="getDbtestMidList" resultType="String">
+		select mid from user order by mid;
+	</select>
+	
+	<select id="getDbtestAddressList" resultType="String">
+		select address from user group by address order by address;
+	</select>
+	
+	<select id="getUserAddressCheck" resultType="com.spring.javaclassS.vo.UserVO">
+		select * from user where address=#{address} order by address;
+	</select>
+	
+	
+	
 	<insert id="setDbtestInputOk">
-		insert into user values (default, #{vo.mid}, #{vo.name}, #{vo.age}, #{vo.address});
+	  insert into user values (default, #{vo.mid}, #{vo.name}, #{vo.age}, #{vo.address});
 	</insert>
 	
-	<update id="setDbtestUpdateOk">
-		update user set mid = #{vo.mid}, name = #{vo.name}, age = #{vo.age}, address = #{vo.address} where idx = #{vo.idx};
+	
+	<update id="setDbtestUpdateOk" parameterType="com.spring.javaclassS.vo.UserVO">
+	  update user set mid=#{mid}, name=#{name}, age=#{age}, address=#{address} where idx=#{idx};
 	</update>
 	
+	
+	
 	<delete id="setDbtestDelete">
-		delete from user where idx = #{idx};
+	  delete from user where idx = #{idx};
 	</delete>
 	
 </mapper>

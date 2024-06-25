@@ -44,12 +44,13 @@
 		<property name="username" value="0620study@gmail.com" />
 		<property name="password" value="jioiaiqwynswifli" />
 		<property name="javaMailProperties">
-			<props>
-				<prop key="mail.transport.protocol">smtp</prop>
-				<prop key="mail.smtp.starttls.enable">true</prop>
-				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
-				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
-			</props>
+		  <props>
+		    <prop key="mail.transport.protocol">smtp</prop>
+		    <prop key="mail.smtp.starttls.enable">true</prop>
+		    <prop key="mail.debug">true</prop>
+		    <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+		    <prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+		  </props>
 		</property>
 	</bean>
 

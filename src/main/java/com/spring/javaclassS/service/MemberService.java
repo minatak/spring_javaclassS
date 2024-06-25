@@ -16,16 +16,16 @@ public interface MemberService {
 
 	public void setMemberPasswordUpdate(String mid, String pwd);
 
-//	public void setMemberInforUpdate(String mid, int point);
+	public void setMemberInforUpdate(String mid, int point);
 
 	public int setPwdChangeOk(String mid, String pwd);
 
-	public String fileUpload(MultipartFile fName, String mid);
+	public String fileUpload(MultipartFile fName, String mid, String photo);
 
 	public ArrayList<MemberVO> getMemberList(int level);
 
 	public int setMemberUpdateOk(MemberVO vo);
 
-	public void setMemberInforUpdate(String mid, int todayCnt, int point);
+	public int setUserDel(String mid);
 
 }

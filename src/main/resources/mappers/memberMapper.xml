@@ -35,15 +35,19 @@
 	</update>
 	
 	<update id="setMemberInforUpdate">
-	  update member2 set visitCnt=visitCnt+1, lastDate=now(), todayCnt=#{todayCnt}, point=#{point} where mid=#{mid};
+	  update member2 set visitCnt=visitCnt+1, lastDate=now(), todayCnt=todayCnt+1, point=#{point} where mid=#{mid};
 	</update>
 	
 	<update id="setPwdChangeOk">
 	  update member2 set pwd = #{pwd} where mid = #{mid};
 	</update>
 	
-	<update id="setMemberUpdateOk">
-	  update member2 set nickName=#{vo.nickName}, name = #{vo.name}, gender = #{vo.gender}, birthday = #{vo.birthday}, tel = #{vo.tel}, address = #{vo.address}, email = #{vo.email}, homePage = #{vo.homePage}, job = #{vo.job}, hobby = #{vo.hobby}, photo = #{vo.photo}, content = #{vo.content}, userInfor = #{vo.userInfor} where mid = #{vo.mid};
-	</update>
+  <update id="setMemberUpdateOk">
+    update member2 set nickName=#{vo.nickName},name=#{vo.name},gender=#{vo.gender},birthday=#{vo.birthday},tel=#{vo.tel},address=#{vo.address},email=#{vo.email},homePage=#{vo.homePage},job=#{vo.job},hobby=#{vo.hobby},photo=#{vo.photo},content=#{vo.content},userInfor=#{vo.userInfor} where mid=#{vo.mid};
+  </update>
+  
+  <update id="setUserDel">
+    update member2 set userDel = 'OK' where mid = #{mid};
+  </update>
 	
 </mapper>

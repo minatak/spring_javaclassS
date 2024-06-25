@@ -1,10 +1,6 @@
 package com.spring.javaclassS.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
@@ -30,9 +26,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.spring.javaclassS.dao.GuestDAO;
 import com.spring.javaclassS.service.MemberService;
-import com.spring.javaclassS.vo.GuestVO;
 import com.spring.javaclassS.vo.MemberVO;
 
 @Controller
@@ -110,25 +104,11 @@ public class MemberController {
 			
 			// 3. 기타처리(DB에 처리해야할것들(방문카운트, 포인트,... 등)
 			// 방문포인트 : 1회방문시 point 10점할당, 1일 최대 50점까지 할당가능
-
-			// 방문포인트 처리를 위한 날짜 추출 비교하기 - 조건에 맞도록 방문 포인트와 카운트를 증가처리한다.
-			Date today = new Date();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			String strToday = sdf.format(today);
-			
-			if(!strToday.equals(vo.getLastDate().substring(0,10))) {
-				// 오늘 처음 방문한 경우(오늘 방문카운트는 1로, 기존 포인트에 +10)
-				vo.setTodayCnt(1);
-				vo.setPoint((vo.getPoint() + 10));
-			}
-			else {
-				// 오늘 다시 방문한경우(오늘 방문카운트는 오늘방문카운트 + 1, 포인트증가는 오늘 방문횟수가 5회 전까지라면 기존포인트에 +10을 한다.)
-				vo.setTodayCnt(vo.getTodayCnt() + 1);
-				if(vo.getTodayCnt() <= 5) vo.setPoint(vo.getPoint() + 10);
-			}		
+			// 숙제...
+			int point = 10;
 			
 			// 방문카운트
-			memberService.setMemberInforUpdate(mid, vo.getTodayCnt(), vo.getPoint());
+			memberService.setMemberInforUpdate(mid, point);
 			
 			return "redirect:/message/memberLoginOk?mid="+mid;
 		}
@@ -169,7 +149,7 @@ public class MemberController {
 		vo.setPwd(passwordEncoder.encode(vo.getPwd()));
 		
 		// 회원 사진 처리(service객체에서 처리후 DB에 저장한다.)
-		if(!fName.getOriginalFilename().equals("")) vo.setPhoto(memberService.fileUpload(fName, vo.getMid()));
+		if(!fName.getOriginalFilename().equals("")) vo.setPhoto(memberService.fileUpload(fName, vo.getMid(), ""));
 		else vo.setPhoto("noimage.jpg");
 		
 		int res = memberService.setMemberJoinOk(vo);
@@ -264,29 +244,8 @@ public class MemberController {
 	@RequestMapping(value = "/memberPwdCheck", method = RequestMethod.POST)
 	public String memberPwdCheckPost(String mid, String pwd) {
 		MemberVO vo = memberService.getMemberIdCheck(mid);
-		
 		if(passwordEncoder.matches(pwd, vo.getPwd())) return "1";
 		return "0";
-	}
-	
-	@RequestMapping(value = "/memberUpdate", method = RequestMethod.GET)
-	public String memberUpdateGet(HttpSession session, Model model) {
-		String mid = (String) session.getAttribute("sMid");
-		MemberVO vo = memberService.getMemberIdCheck(mid);
-		model.addAttribute("vo", vo);
-		return "member/memberUpdate";
-	}
-	
-	@RequestMapping(value = "/memberUpdate", method = RequestMethod.POST)
-	public String memberUpdatePost(MemberVO vo, MultipartFile fName) {
-		// 회원 사진 처리(service객체에서 처리후 DB에 저장한다.)
-		if(!fName.getOriginalFilename().equals("")) vo.setPhoto(memberService.fileUpload(fName, vo.getMid()));
-		else vo.setPhoto("noimage.jpg");
-
-		int res = memberService.setMemberUpdateOk(vo);
-		
-		if(res != 0) return "redirect:/message/memberUpdateOk";
-		else return "redirect:/message/memberUpdateNo";
 	}
 	
 	@ResponseBody
@@ -301,6 +260,47 @@ public class MemberController {
 		ArrayList<MemberVO> vos = memberService.getMemberList(level);
 		model.addAttribute("vos", vos);
 		return "member/memberList";
+	}
+	
+	@RequestMapping(value = "/memberUpdate", method = RequestMethod.GET)
+	public String memberUpdateGet(Model model, HttpSession session) {
+		String mid = (String) session.getAttribute("sMid");
+		MemberVO vo = memberService.getMemberIdCheck(mid);
+		model.addAttribute("vo", vo);
+		return "member/memberUpdate";
+	}
+	
+	@RequestMapping(value = "/memberUpdate", method = RequestMethod.POST)
+	public String memberUpdatePost(MemberVO vo, MultipartFile fName, HttpSession session) {
+		// 닉네임 체크
+		String nickName = (String) session.getAttribute("sNickName");
+		if(memberService.getMemberNickCheck(vo.getNickName()) != null && !nickName.equals(vo.getNickName())) {
+			return "redirect:/message/nickCheckNo";
+		}
+		
+		// 회원 사진 처리(service객체에서 처리후 DB에 저장한다. 원본파일은 noimage.jpg가 아닐경우 삭제한다.)
+		if(fName.getOriginalFilename() != null && !fName.getOriginalFilename().equals("")) vo.setPhoto(memberService.fileUpload(fName, vo.getMid(), vo.getPhoto()));
+		
+		int res = memberService.setMemberUpdateOk(vo);
+		if(res != 0) {
+			session.setAttribute("sNickName", vo.getNickName());
+			return "redirect:/message/memberUpdateOk";
+		}
+		else return "redirect:/message/memberUpdateNo";
+	}
+
+	// 회원 탈퇴...신청...
+	@ResponseBody
+	@RequestMapping(value = "/userDel", method = RequestMethod.POST)
+	public String userDelPost(HttpSession session, HttpServletRequest request) {
+		String mid = (String) session.getAttribute("sMid");
+		int res = memberService.setUserDel(mid);
+		
+		if(res == 1) {
+			session.invalidate();
+			return "1";
+		}
+		else return "0";
 	}
 	
 }

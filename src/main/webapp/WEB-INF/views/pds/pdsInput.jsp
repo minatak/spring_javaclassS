@@ -32,9 +32,8 @@
     		fName = document.getElementById("fName").files[i].name;		// 선택된 1개의 파일이름가져오기
     		ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
 	    	fileSize = document.getElementById("fName").files[i].size;
-	    	if(ext != 'jpg' && ext != 'gif' && ext != 'png' && ext != 'zip' && ext != 'jfif') {
-	    		alert("업로드 가능한 파일은 'jpg/gif/png/zip/jfif'만 가능합니다.");
-	    		return false;
+	    	if(ext != 'jpg' && ext != 'gif' && ext != 'png' && ext != 'zip') {
+	    		alert("업로드 가능한 파일은 'jpg/gif/png/zip'만 가능합니다.");
 	    	}
     	}
     	

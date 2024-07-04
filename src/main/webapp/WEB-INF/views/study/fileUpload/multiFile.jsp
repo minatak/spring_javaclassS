@@ -13,20 +13,33 @@
     
     function fCheck() {
     	let fName = document.getElementById("fName").value;
-    	let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
-    	let maxSize = 1024 * 1024 * 20;	// 한번에 업로드 최대용량은 20MByte
+    	let tile = $("#title").val();
+    	let ext = "";
+    	let fileSize = 0;
+    	let maxSize = 1024 * 1024 * 20;	// 기본 단위 : Byte,   1024 * 1024 * 20 = 20MByte 허용
     	
     	if(fName.trim() == "") {
     		alert("업로드할 파일을 선택하세요");
     		return false;
     	}
-    	
-    	let fileSize = document.getElementById("fName").files[0].size;
-    	if(fileSize > maxSize) {
-    		alert("업로드할 파일의 최대용량은 20MByte입니다.");
+    	else if(title.trim() == "") {
+    		alert("업로드할 파일을 선택하세요");
+    		return false;
     	}
-    	else if(ext != "jpg" && ext != "gif" && ext != "png" && ext != "zip" && ext != "ppt" && ext != "pptx" && ext != "hwp") {
-    		alert("업로드 가능한 파일은 'jpg/gif/png/zip/ppt/pptx/hwp'파일 입니다.");
+    	
+    	let fileLength = document.getElementById("fName").files.length;	// 선택한 파일의 갯수
+    	
+    	for(let i=0; i<fileLength; i++) {
+    		fName = document.getElementById("file").files[i].name;		// 선택된 1개의 파일이름가져오기
+    		ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
+	    	fileSize = document.getElementById("file").files[i].size;
+	    	if(ext != 'jpg' && ext != 'gif' && ext != 'png') {
+	    		alert("업로드 가능한 파일은 'jpg/gif/png'만 가능합니다.");
+	    	}
+    	}
+    	
+    	if(fileSize > maxSize) {
+    		alert("업로드 파일의 최대용량은 20MByte입니다.");
     	}
     	else {
     		myform.submit();

@@ -1,11 +1,14 @@
 package com.spring.javaclassS.service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaclassS.vo.CrimeVO;
+import com.spring.javaclassS.vo.KakaoAddressVO;
 import com.spring.javaclassS.vo.UserVO;
 
 public interface StudyService {
@@ -31,5 +34,15 @@ public interface StudyService {
 	public int fileUpload(MultipartFile fName, String mid);
 
 	public int multiFileUpload(MultipartHttpServletRequest mFile);
+
+	public Map<String, Integer> analyzer(String content);
+
+	public KakaoAddressVO getKakaoAddressSearch(String address);
+
+	public void setKakaoAddressInput(KakaoAddressVO vo);
+
+	public List<KakaoAddressVO> getKakaoAddressList();
+
+	public int setKakaoAddressDelete(String address); // 앞->리턴타입(한개 지워지면 1이 옴), 뒤->받는 변수
 
 }

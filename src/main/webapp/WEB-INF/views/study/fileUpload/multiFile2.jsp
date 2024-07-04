@@ -11,12 +11,20 @@
   <style>
     .imgsWrap {
       border: 2px solid #eee;
-      margin:10px;
+      margin: 10px;
     }
     
     .imgsWrap img {
       max-width: 160px;
-      margin:5px;
+      margin: 5px;
+    }
+    
+    .myBtn {
+      width:200px;
+      padding: 10px;
+      background-color: #09A;
+      color: #fff;
+      border-radius: 5px;
     }
   </style>
   <script>
@@ -42,7 +50,7 @@
     		
 	    		let reader = new FileReader();
 	    		reader.onload = function(e) {
-	    			let str = "<a href='javascript:void(0);' onclick='deleteImage("+idx+")' id='imgId"+idx+"'><img src='"+e.target.result+"' data-file='"+f.name+"' class='' title='그림을 클릭하시면 해당 그림이 제거됩니다.'/></a>";
+	    			let str = "<a href='javascript:void(0);' onclick='deleteImage("+idx+")' id='imgId"+idx+"'><img src='"+e.target.result+"' data-file='"+f.name+"' class='' title='그림을 클릭하시면 제거됩니다.("+idx+")'/></a>";
 	    			$(".imgsWrap").append(str);
 	    			idx++;
 	    		}
@@ -52,7 +60,7 @@
     });
     
     function deleteImage(idx) {
-    	imgFiles.slice(idx, 1);
+    	imgFiles.slice(idx,1);
     	
     	let imgId = "#imgId"+idx;
     	$(imgId).remove();
@@ -64,19 +72,18 @@
     
     function fCheck() {
     	if(imgFiles.length < 1) {
-    		alert("1개 이상의 파일을 선택해주세요");
+    		alert("한개 이상의 파일을 선택해 주세요");
     		return;
     	}
     	
     	let imgNames = "";
-    	for(let i=0; i<imgFiles.lengtj; i++) {
-    		imgNAmes += imgFiles[i].name + "/";
+    	for(let i=0; i<imgFiles.length; i++) {
+    		imgNames += imgFiles[i].name + "/";
     	}
     	imgNames = imgNames.substring(0, imgNames.length-1);
     	$("#imgNames").val(imgNames);
     	myform.submit();
     }
-    
   </script>
 </head>
 <body>
@@ -86,15 +93,15 @@
 <div class="container">
   <h2>멀티(그림)파일 업로드 연습</h2>
   <form name="myform" method="post" enctype="multipart/form-data">
-    <a href="javascript:imageUpload()" class="myBtn">이미지불러오기</a> 
-    <input type="file" name="fName" id="inputImgs" multiple accept=".jpg,.gif,.png,.zip,.ppt,.pptx,.hwp"/>
-    <p>
+    <a href="javascript:imageUpload()" class="myBtn mb-2">이미지불러오기</a> 
+    <input type="file" name="fName" id="inputImgs" multiple style="display:none" accept=".jpg,.gif,.png,.zip,.ppt,.pptx,.hwp"/>
+    <p class="mt-4">
       <input type="button" value="파일업로드" onclick="fCheck()" class="btn btn-success"/>
       <input type="reset" value="다시선택" class="btn btn-warning"/>
       <input type="button" value="싱글파일업로드로이동(파일리스트)" onclick="location.href='${ctp}/study/fileUpload/fileUpload';" class="btn btn-primary"/>
       <input type="button" value="멀티파일업로드로이동" onclick="location.href='${ctp}/study/fileUpload/multiFile';" class="btn btn-secondary"/>
     </p>
-    <input type="hidden" name="imgNames" id="imgNames" />
+    <input type="hidden" name="imgNames" id="imgNames"/>
   </form>
   <hr/>
   <div>

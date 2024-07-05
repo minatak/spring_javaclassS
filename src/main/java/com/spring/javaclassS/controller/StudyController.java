@@ -1082,4 +1082,10 @@ public class StudyController {
 		return "study/kakao/kakaoEx3";
 	}
 	
+	// 날씨 API 폼
+	@RequestMapping(value = "/weather/weatherForm", method = RequestMethod.GET)
+	public String weatherFormGet() {
+		return "study/weather/weatherForm";
+	}
+	
 }

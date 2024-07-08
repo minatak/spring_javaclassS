@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaclassS.vo.CrimeVO;
 import com.spring.javaclassS.vo.KakaoAddressVO;
+import com.spring.javaclassS.vo.QrCodeVO;
 import com.spring.javaclassS.vo.UserVO;
 
 public interface StudyService {
@@ -43,6 +44,22 @@ public interface StudyService {
 
 	public List<KakaoAddressVO> getKakaoAddressList();
 
-	public int setKakaoAddressDelete(String address); // 앞->리턴타입(한개 지워지면 1이 옴), 뒤->받는 변수
+	public int setKakaoAddressDelete(String address);
+
+	public String fileCsvToMysql(MultipartFile fName);
+
+	public int setCsvTableDelete(String csvTable);
+
+	public String setQrCodeCreate(String realPath);
+
+	public String setQrCodeCreate1(String realPath, QrCodeVO vo);
+
+	public String setQrCodeCreate2(String realPath, QrCodeVO vo);
+
+	public String setQrCodeCreate3(String realPath, QrCodeVO vo);
+
+	public String setQrCodeCreate4(String realPath, QrCodeVO vo);
+
+	public QrCodeVO getQrCodeSearch(String qrCode);
 
 }

@@ -6,7 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +17,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -104,81 +107,13 @@ public class JavaclassProvide {
 		return "1";
 	}
 
-	// PDF파일 처리를 위한 서비스
-	/*
-	public byte[] createPdf(String text) throws IOException {
-    try (PDDocument document = new PDDocument()) {
-      PDPage page = new PDPage();
-      document.addPage(page);
-      
-      //Font font = Font.createFont(Font.TRUETYPE_FONT, this.getClass().getClassLoader().getResourceAsStream("fonts/NanumGothic-Bold.ttf"));
-      // 나눔고딕 폰트를 로드합니다.
-      //File fontFile = new File("fonts/NanumGothic.ttf");
-      File fontFile = new File("fonts/NanumGothic-Bold.ttf");
-      PDType0Font font = PDType0Font.load(document, fontFile);
-
-      try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-        //contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
-        contentStream.setFont(font, 12);
-        contentStream.beginText();
-        contentStream.newLineAtOffset(100, 700);
-        contentStream.showText(text);
-        contentStream.endText();
-      }
-
-      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      document.save(outputStream);
-      return outputStream.toByteArray();
-    }
+	public String newNameCreate(int len) {
+		Date today = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
+		String newName = sdf.format(today);
+		newName += RandomStringUtils.randomAlphanumeric(len) + "_";
+		return newName;
 	}
-	*/
-	/*
-	public class DownloadView extends AbstractView {
-
-		public DownloadView() {
-			setContentType("application/octet-stream");
-		}
-
-		@Override
-		protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
-				HttpServletResponse response) throws Exception {
-			Assert.notNull(model, "model is null");
-
-			Object o = model.get("download");
-			Assert.notNull(o, "download file is empty");
-
-			response.setContentType(getContentType());
-			response.setHeader("Content-Transfer-Encoding", "binary");
-
-			OutputStream out = response.getOutputStream();
-
-			String fileName = null;
-			InputStream is = null;
-			File file = null;
-
-		
-			@SuppressWarnings("unchecked")
-			HashMap<String, Object> map = (HashMap<String, Object>) model.get("download");
-			file = (File) map.get("download");
-			is = new FileInputStream(file);
-			response.setContentLength((int) file.length());
-			fileName = (String) model.get("fileName");
-		
-			response.setHeader("Content-Disposition", "attachment; fileName=\"" + fileName + "\";");
-
-			try {
-				FileCopyUtils.copy(is, out);
-			} finally {
-				if (is != null) {
-					try {
-						is.close();
-					} catch (IOException ex) {
-					}
-				}
-			}
-			
-			out.flush();
-		}
-	}
-	*/
+	
+	
 }

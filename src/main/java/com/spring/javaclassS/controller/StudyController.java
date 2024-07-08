@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,9 +23,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -69,6 +75,7 @@ import com.spring.javaclassS.vo.CrawlingVO;
 import com.spring.javaclassS.vo.CrimeVO;
 import com.spring.javaclassS.vo.KakaoAddressVO;
 import com.spring.javaclassS.vo.MailVO;
+import com.spring.javaclassS.vo.QrCodeVO;
 import com.spring.javaclassS.vo.UserVO;
 
 @Controller
@@ -1082,10 +1089,178 @@ public class StudyController {
 		return "study/kakao/kakaoEx3";
 	}
 	
+	// 카카오맵 : 지명으로 위치검색후 카카오DB에 저장된 위치를 검색하여 주변정보 보여주기
+	@RequestMapping(value = "/kakao/kakaoEx4", method = RequestMethod.GET)
+	public String kakaoEx4Get(Model model,
+			@RequestParam(name="address", defaultValue = "", required = false) String address
+			) {
+		model.addAttribute("address", address);
+		return "study/kakao/kakaoEx4";
+	}
+	
+	// CSV파일을 MySQL파일로 변환하기폼보기
+	@RequestMapping(value = "/csv/csvForm", method = RequestMethod.GET)
+	public String csvFormGet() {
+		return "study/csv/csvForm";
+	}
+	
+	// CSV파일을 MySQL파일로 변환하기
+	@ResponseBody
+	@RequestMapping(value = "/csv/csvForm", method = RequestMethod.POST, produces="application/text; charset=utf8")
+	public String csvFormPost(MultipartFile fName, HttpServletRequest request) throws IOException {
+		return studyService.fileCsvToMysql(fName);
+	}
+	
+	// CSV파일을 MySQL파일로 삭제하기
+	@ResponseBody
+	@RequestMapping(value = "/csv/csvDeleteTable", method = RequestMethod.POST)
+	public String csvDeleteTablePost(String csvTable) throws IOException {
+		return studyService.setCsvTableDelete(csvTable) + "";
+	}
+	
 	// 날씨 API 폼
 	@RequestMapping(value = "/weather/weatherForm", method = RequestMethod.GET)
-	public String weatherFormGet() {
+	public String weatherFormGet(Model model) {
+		List<KakaoAddressVO> jiyukVos = studyService.getKakaoAddressList();
+		model.addAttribute("jiyukVos", jiyukVos);
 		return "study/weather/weatherForm";
+	}
+	
+	// 캡차 연습하기 폼
+	@RequestMapping(value = "/captcha/captchaForm", method = RequestMethod.GET)
+	public String captchaFormGet() {
+		return "redirect:/study/captcha/captchaImage";
+	}
+	
+	// 캡차 연습하기 처리
+	@RequestMapping(value = "/captcha/captchaImage", method = RequestMethod.GET)
+	public String captchaImageGet(HttpSession session, HttpServletRequest request, Model model) {
+		// 시스템에 설정된 폰트 출력해보기
+		/*
+		Font[] fontList = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+		for(Font f : fontList) {
+			System.out.println(f.getName());
+		}
+		*/
+		
+		try {
+			// 알파뉴메릭문자 5개를 가져온다.
+			String randomString = RandomStringUtils.randomAlphanumeric(5);
+			System.out.println("randomString : " + randomString);
+			session.setAttribute("sCaptcha", randomString);
+			
+			Font font = new Font("Jokerman", Font.ITALIC, 30);
+			FontRenderContext frc = new FontRenderContext(null, true, true);
+			Rectangle2D bounds = font.getStringBounds(randomString, frc);
+			int w = (int) bounds.getWidth();
+			int h = (int) bounds.getHeight();
+			
+			// 이미지로 생성
+			BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_BGR);
+			Graphics2D g = image.createGraphics();
+			
+			g.fillRect(0, 0, w, h);
+			g.setColor(new Color(0, 156, 240));
+			g.setFont(font);
+			// 각종 랜더링 명령어에 의한 chptcha문자 작업.....
+			g.drawString(randomString, (float)bounds.getX(), (float)-bounds.getY());
+			g.dispose();
+			
+			String realPath = request.getSession().getServletContext().getRealPath("/resources/data/study/");
+			int temp = (int) (Math.random()*5) + 1;
+			String captchaImage = "captcha" + temp + ".png";
+			
+			ImageIO.write(image, "png", new File(realPath + captchaImage));
+			model.addAttribute("captchaImage", captchaImage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "study/captcha/captchaForm";
+	}
+	
+	// 캡차 문자 확인하기
+	@ResponseBody
+	@RequestMapping(value = "/captcha/captcha", method = RequestMethod.POST)
+	public String captchaPost(HttpSession session, String strCaptcha) {
+		if(strCaptcha.equals(session.getAttribute("sCaptcha").toString())) return "1";
+		else return "0";
+	}
+	
+	// QR Code 연습 폼
+	@RequestMapping(value = "/qrCode/qrCodeForm", method = RequestMethod.GET)
+	public String qrCodeCreateGet() {
+		return "study/qrCode/qrCodeForm";
+	}
+	
+	// QR Code 생성하기
+	@ResponseBody
+	@RequestMapping(value = "/qrCode/qrCodeCreate", method = RequestMethod.POST)
+	public String qrCodeCreatePost(HttpServletRequest request) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
+		return studyService.setQrCodeCreate(realPath);
+	}
+	
+	// QR Code 개인정보 QR 코드로 생성하기 폼보기
+	@RequestMapping(value = "/qrCode/qrCodeEx1", method = RequestMethod.GET)
+	public String qrCodeEx1Get() {
+		return "study/qrCode/qrCodeEx1";
+	}
+	
+	// QR Code 개인정보 QR 코드로 생성하기
+	@ResponseBody
+	@RequestMapping(value = "/qrCode/qrCodeCreate1", method = RequestMethod.POST, produces="application/text; charset=utf-8")
+	public String qrCodeCreate1Post(HttpServletRequest request, QrCodeVO vo) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
+		return studyService.setQrCodeCreate1(realPath, vo);
+	}
+	
+	// QR Code 소개사이트 주소 생성하기 폼보기
+	@RequestMapping(value = "/qrCode/qrCodeEx2", method = RequestMethod.GET)
+	public String qrCodeEx2Get() {
+		return "study/qrCode/qrCodeEx2";
+	}
+	
+	// QR Code 소개사이트 주소 생성하기
+	@ResponseBody
+	@RequestMapping(value = "/qrCode/qrCodeCreate2", method = RequestMethod.POST, produces="application/text; charset=utf-8")
+	public String qrCodeCreate2Post(HttpServletRequest request, QrCodeVO vo) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
+		return studyService.setQrCodeCreate2(realPath, vo);
+	}
+	
+	// QR Code 티켓예매 폼보기
+	@RequestMapping(value = "/qrCode/qrCodeEx3", method = RequestMethod.GET)
+	public String qrCodeEx3Get() {
+		return "study/qrCode/qrCodeEx3";
+	}
+	
+	// QR Code 티켓예매 생성하기
+	@ResponseBody
+	@RequestMapping(value = "/qrCode/qrCodeCreate3", method = RequestMethod.POST, produces="application/text; charset=utf-8")
+	public String qrCodeCreate3Post(HttpServletRequest request, QrCodeVO vo) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
+		return studyService.setQrCodeCreate3(realPath, vo);
+	}
+	
+	// QR Code 티켓예매 폼보기(DB저장 검색)
+	@RequestMapping(value = "/qrCode/qrCodeEx4", method = RequestMethod.GET)
+	public String qrCodeEx4Get() {
+		return "study/qrCode/qrCodeEx4";
+	}
+	
+	// QR Code 티켓예매 생성하기(DB저장 검색)
+	@ResponseBody
+	@RequestMapping(value = "/qrCode/qrCodeCreate4", method = RequestMethod.POST, produces="application/text; charset=utf-8")
+	public String qrCodeCreate4Post(HttpServletRequest request, QrCodeVO vo) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
+		return studyService.setQrCodeCreate4(realPath, vo);
+	}
+	
+	// QR Code명 검색하기(DB저장 검색)
+	@ResponseBody
+	@RequestMapping(value = "/qrCode/qrCodeSearch", method = RequestMethod.POST)
+	public QrCodeVO qrCodeSearchPost(String qrCode) {
+		return studyService.getQrCodeSearch(qrCode);
 	}
 	
 }

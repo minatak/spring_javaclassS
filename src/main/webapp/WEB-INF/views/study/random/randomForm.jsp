@@ -19,7 +19,7 @@
     		type : "post",
     		success:function(res) {
     			cnt++;
-    			str += cnt + ".(randomNumeric) : " + res + "<br/>";
+    			str += cnt + "(random) : " + res + "<br/>";
     			$("#demo").html(str);
     		},
     		error : function() {
@@ -34,7 +34,7 @@
     		type : "post",
     		success:function(res) {
     			cnt++;
-    			str += cnt + ".(UUID) : " + res + "<br/>";
+    			str += cnt + "(UUID) : " + res + "<br/>";
     			$("#demo").html(str);
     		},
     		error : function() {
@@ -49,7 +49,7 @@
     		type : "post",
     		success:function(res) {
     			cnt++;
-    			str += cnt + ".(randomAlphaNumeric) : " + res + "<br/>";
+    			str += cnt + "(AlphaNumeric) : " + res + "<br/>";
     			$("#demo").html(str);
     		},
     		error : function() {

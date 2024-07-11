@@ -64,7 +64,7 @@
       </tr>
       <tr>
         <th>이메일</th>
-        <td><input type="text" name="email" id="email" value="takmin0926@naver.com" required class="form-control"/></td>
+        <td><input type="text" name="email" id="email" value="cjsk1126@naver.com" required class="form-control"/></td>
       </tr>
       <tr>
         <td colspan="2">

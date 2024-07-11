@@ -8,6 +8,52 @@
   <meta charset="UTF-8">
   <title>thumbnailResult.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
+  <script>
+    'use strict';
+    
+    // 개별파일 삭제처리
+    function fileDelete(file) {
+    	let ans = confirm("선택한 파일을 삭제하시겠습니까?");
+    	if(!ans) return false;
+    	
+    	$.ajax({
+    		url  : "${ctp}/study/thumbnail/thumbnailDelete",
+    		type : "post",
+    		data : {file : file},
+    		success:function(res) {
+    			if(res != 0) {
+    				alert("파일이 삭제되었습니다.");
+    				location.reload();
+    			}
+    			else alert("파일 삭제 실패~");
+    		},
+    		error : function() {
+    			alert("전송오류!");
+    		}
+    	});
+    }
+    
+    // 전체파일 삭제처리
+    function fileDeleteAll() {
+    	let ans = confirm("모든 파일을 삭제하시겠습니까?");
+    	if(!ans) return false;
+    	
+    	$.ajax({
+    		url  : "${ctp}/study/thumbnail/thumbnailDeleteAll",
+    		type : "post",
+    		success:function(res) {
+    			if(res != 0) {
+    				alert("파일이 삭제되었습니다.");
+    				location.reload();
+    			}
+    			else alert("파일 삭제 실패~");
+    		},
+    		error : function() {
+    			alert("전송오류!");
+    		}
+    	});
+    }
+  </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
@@ -20,9 +66,8 @@
     <h3>서버에 저장된 파일정보(총 : ${fileCount}건)</h3>
     <div class="row">
       <div class="col">저장경로 : ${ctp}/resources/data/thumbnail/*.*</div>
-      <div class="col">
-        <input type="button" value="폴더내 모든파일 삭제" onclick="fileDeleteAll()" class="btn btn-danger"/>
-      </div>
+      <div class="col"><input type="button" value="폴더내 모든파일 삭제" onclick="fileDeleteAll()" class="btn btn-danger"/></div>
+      <div class="col"><input type="button" value="썸네일만들기" onclick="location.href='thumbnailForm'" class="btn btn-primary"/></div>
     </div>
     <table class="table table-hover text-center">
       <tr class="table-secondary">

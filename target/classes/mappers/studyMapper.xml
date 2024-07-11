@@ -36,6 +36,10 @@
 		select * from qrCode where qrCodeName = #{qrCode};
 	</select>
 	
+	<select id="getTransactionList" resultType="com.spring.javaclassS.vo.TransactionVO">
+		select * from user order by idx desc;
+	</select>
+	
 	
 	<insert id="setSaveCrimeDate">
 		insert into crime values (default,#{vo.year},#{vo.police},#{vo.robbery},#{vo.theft},#{vo.murder},#{vo.violence});

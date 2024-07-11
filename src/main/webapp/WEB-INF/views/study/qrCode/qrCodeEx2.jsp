@@ -44,18 +44,18 @@
 <p><br/></p>
 <div class="container">
   <h2>소개할 사이트를 QR코드로 생성하기</h2>
-  <div>(소개하고 싶은 사이트의 주소를 입력해주세요 : 예) 고궁, 문화재, 블로그, 홈페이지, 상품상세설명...)</div>
+  <div>(소개하고 싶은 사이트의 주소를 입력해주세요 : 예- 고궁, 문화재, 블로그, 홈페이지, 상품상세설명,....)</div>
   <form name="myform" method="post">
     <table class="table table-bordered text-center">
       <tr>
         <th>이동할 주소</th>
-        <td><input type="text" name="moveUrl" id="moveUrl" value="http://49.142.157.251:9090/javaclassJ17/Main.com" autofocus required class="form-control"/></td>
+        <td><input type="text" name="moveUrl" id="moveUrl" value="cjsk1126.tistory.com" autofocus required class="form-control"/></td>
       </tr>
       <tr>
         <td colspan="2">
           <input type="button" value="QR코드 생성" onclick="qrCodeCreate2()" class="btn btn-success mr-2"/>
           <input type="reset" value="다시입력" class="btn btn-warning mr-2"/>
-          <input type="button" value="돌아가기" onclick="location.href='qrCodeForm';" class="btn btn-primary mr-4"/>  
+          <input type="button" value="돌아가기" onclick="location.href='qrCodeForm';" class="btn btn-primary mr-4"/>
         </td>
       </tr>
     </table>

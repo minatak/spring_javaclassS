@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,10 +31,12 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.spring.javaclassS.common.JavaclassProvide;
 import com.spring.javaclassS.dao.StudyDAO;
+import com.spring.javaclassS.vo.ChartVO;
 import com.spring.javaclassS.vo.CrimeVO;
 import com.spring.javaclassS.vo.KakaoAddressVO;
 import com.spring.javaclassS.vo.PetCafeVO;
 import com.spring.javaclassS.vo.QrCodeVO;
+import com.spring.javaclassS.vo.TransactionVO;
 import com.spring.javaclassS.vo.UserVO;
 
 import net.coobird.thumbnailator.Thumbnailator;
@@ -588,6 +591,42 @@ public class StudyServiceImpl implements StudyService {
 		}
 		
 		return res;
+	}
+
+	@Override
+	public List<ChartVO> getRecentlyVisitCount(int i) {
+		return studyDAO.getRecentlyVisitCount(i);
+	}
+
+	@Override
+	public List<TransactionVO> getTransactionList() {
+		return studyDAO.getTransactionList();
+	}
+
+	@Override
+	public int setTransactionUserInput(TransactionVO vo) {
+		return studyDAO.setTransactionUserInput(vo);
+	}
+
+	@Override
+	public List<TransactionVO> getTransactionList2() {
+		return studyDAO.getTransactionList2();
+	}
+
+	@Override
+	public void setTransactionUser1Input(TransactionVO vo) {
+		studyDAO.setTransactionUser1Input(vo);
+	}
+
+	@Override
+	public void setTransactionUser2Input(TransactionVO vo) {
+		studyDAO.setTransactionUser2Input(vo);
+	}
+
+	@Transactional
+	@Override
+	public void setTransactionUserTotalInput(TransactionVO vo) {
+		studyDAO.setTransactionUserTotalInput(vo);
 	}
 
 

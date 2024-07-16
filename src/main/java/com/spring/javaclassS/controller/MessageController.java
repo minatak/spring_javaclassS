@@ -208,7 +208,7 @@ public class MessageController {
 			model.addAttribute("url", "/study/validator/validatorForm");
 		}
 		else if(msgFlag.equals("backendCheckNo")) {
-			model.addAttribute("msg", "저장실패~~ 입력된 자료를 확인해보세요.(BackEnd Check)");
+			model.addAttribute("msg", "저장실패~~ "+tempFlag+"를 확인해보세요.(BackEnd Check)");
 			model.addAttribute("url", "/study/validator/validatorForm");
 		}
 		

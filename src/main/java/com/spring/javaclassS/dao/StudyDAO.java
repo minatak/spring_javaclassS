@@ -57,6 +57,6 @@ public interface StudyDAO {
 
 	public void setTransactionUser2Input(@Param("vo") TransactionVO vo);
 
-	public void setTransactionUserTotalInput(@Param("vo") TransactionVO vo);
+	public int setTransactionUserTotalInput(@Param("vo") TransactionVO vo);
 
 }

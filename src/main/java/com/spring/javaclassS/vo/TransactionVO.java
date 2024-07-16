@@ -17,14 +17,15 @@ import lombok.ToString;
 public class TransactionVO {
 	private int idx;
 	
-	@NotEmpty // 공백처리
-	@Size(min=3, max=4, message = "아이디 길이가 잘못되었습니다.")
+	@NotEmpty(message = "아이디가 공백입니다./midEmpty")
+	@Size(min=3, max=20, message = "아이디 길이가 잘못되었습니다./midSizeNo")
 	private String mid;
 	
-	@Size(min=2, max=20, message = "성명의 길이가 잘못되었습니다.")
+	@NotEmpty(message = "이름이 공백입니다./nameEmpty")
+	@Size(min=2, max=20, message = "이름 길이가 잘못되었습니다./nameSizeNo")
 	private String name;
 	
-	@Range(min=19, message = "미성년자는 가입할수 없습니다.")
+	@Range(min=18, max=99, message = "나이 범위를 벗어납니다./ageRangeNo")
 	private int age;
 	
 	private String address;

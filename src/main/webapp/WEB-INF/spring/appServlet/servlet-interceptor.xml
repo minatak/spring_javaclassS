@@ -18,9 +18,16 @@
 	    <mapping path="/member/**"/>
 	    <mapping path="/board/boardList"/>
 	    <exclude-mapping path="/member/memberLogin"/>
+	    <exclude-mapping path="/member/qrLogin"/>
+	    <exclude-mapping path="/member/qrLoginConfirm/**"/>
+	    <exclude-mapping path="/member/qrLoginCheck/**"/>
+	    <exclude-mapping path="/member/memberNaverLoginNew"/>
+	    <exclude-mapping path="/member/memberNaverLogin"/>
 	    <exclude-mapping path="/member/memberJoin"/>
 	    <exclude-mapping path="/member/memberIdCheck"/>
 	    <exclude-mapping path="/member/memberNickCheck"/>
+	    <exclude-mapping path="/member/memberEmailCheck"/>
+	    <exclude-mapping path="/member/memberEmailCheckOk"/>
 	    <exclude-mapping path="/member/memberLogout"/>
 	    <exclude-mapping path="/member/kakaoLogin"/>
 	    <exclude-mapping path="/member/kakaoLogout"/>
@@ -32,7 +39,9 @@
 	    <mapping path="/user/**"/>
 	    <mapping path="/dbShop/**"/>
 	    <mapping path="/pds/pdsList"/>
-	    <mapping path="/pds/pdsDownload"/>
+	    <mapping path="/pds/pdsTotalDown"/>
+	    <mapping path="/pds/pdsContent"/>
+	    <mapping path="/pds/pdsDownNumCheck"/>
 	    <mapping path="/member/memberList"/>
 	    <exclude-mapping path="/board/boardList"/>
 	    <beans:ref bean="level2Interceptor" />
@@ -40,7 +49,9 @@
 	  <interceptor>	<!-- 우수회원(정회원은 자료실의 list와 downLoad가능, upLoad는 우수회원 이상만 가능 -->
 	  	<mapping path="/pds/**"/>
 	  	<exclude-mapping path="/pds/pdsList"/>
-	  	<exclude-mapping path="/pds/pdsDownload"/>
+	  	<exclude-mapping path="/pds/pdsTotalDown"/>
+	  	<exclude-mapping path="/pds/pdsContent"/>
+	  	<exclude-mapping path="/pds/pdsDownNumCheck"/>
 	  	<beans:ref bean="level1Interceptor" />
 	  </interceptor>
 	  <interceptor>	<!-- 관리자 -->

@@ -625,8 +625,8 @@ public class StudyServiceImpl implements StudyService {
 
 	@Transactional
 	@Override
-	public void setTransactionUserTotalInput(TransactionVO vo) {
-		studyDAO.setTransactionUserTotalInput(vo);
+	public int setTransactionUserTotalInput(TransactionVO vo) {
+		return studyDAO.setTransactionUserTotalInput(vo);
 	}
 
 

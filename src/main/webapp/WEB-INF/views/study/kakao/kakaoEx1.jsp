@@ -49,7 +49,7 @@
 	</form>
 	
 	<!-- 카카오맵 Javascript API -->
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=158c673636c9a17a27b67c95f2c6be5c"></script>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=de6e07199c4aa87682edf478ce5966ae"></script>
 	<script>
 	  // 1.지도를 띄워주는 기본 코드(지도 생성)
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 

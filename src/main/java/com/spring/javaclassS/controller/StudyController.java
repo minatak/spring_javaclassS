@@ -51,6 +51,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -1458,11 +1459,29 @@ public class StudyController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/transaction/transaction2", method = RequestMethod.POST)
-	public String transaction2Post(TransactionVO vo) {
-		studyService.setTransactionUserTotalInput(vo);
+	@RequestMapping(value = "/transaction/transaction2", method = RequestMethod.POST, produces="application/text; charset=utf8")
+	public String transaction2Post(@Validated TransactionVO vo, BindingResult bindingResult, Model model) {
+		System.out.println("error : " + bindingResult.hasErrors());
 		
-		return "1";
+		if(bindingResult.hasFieldErrors()) {	// bindingResult.hasFieldErrors() 결과값이 true가 나오면 오류가 있다는 것이다.
+			List<ObjectError> list = bindingResult.getAllErrors();
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			
+			String[] temp = null;
+			for(ObjectError e : list) {
+				System.out.println("메세지 : " + e.getDefaultMessage());
+				temp = e.getDefaultMessage().split("/");
+				if(temp[1].equals("midEmpty") || temp[1].equals("midSizeNo") || temp[1].equals("nameEmpty") || temp[1].equals("nameSizeNo") || temp[1].equals("ageRangeNo")) break;
+			}
+			System.out.println("temp : " + temp[0]);
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+//			메세지컨트롤러를 이용할경우는 아래2줄로 처리...
+//			model.addAttribute("tempFlag", temp[0]);
+//			return "redirect:/message/backendCheckNo";
+			return temp[0];
+		}
+		
+		return studyService.setTransactionUserTotalInput(vo) + "";
 	}
 	
 }

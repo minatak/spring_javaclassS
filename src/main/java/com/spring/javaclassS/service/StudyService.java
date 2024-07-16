@@ -78,6 +78,6 @@ public interface StudyService {
 
 	public void setTransactionUser2Input(TransactionVO vo);
 
-	public void setTransactionUserTotalInput(TransactionVO vo);
+	public int setTransactionUserTotalInput(TransactionVO vo);
 
 }

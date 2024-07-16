@@ -24,7 +24,7 @@
     function userDelete(idx) {
     	let ans = confirm("선택하신 회원을 삭제처리 하시겠습니까?");
     	if(!ans) return false;
-    	location.href = "${ctp}/dbtest/dbtestDelete?tempFlag=validator&idx="+idx;
+    	location.href = "${ctp}/dbtest/dbtestDelete?tempFlag=transaction&idx="+idx;
     }
     
     function nameSearch() {
@@ -102,12 +102,15 @@
     		type : "post",
     		url  : "${ctp}/study/transaction/transaction2",
     		data : query,
-    		success:function() {
-    			alert("등록 OK");
-    			location.reload();
+    		success:function(res) {
+    			if(res == "1") {
+	    			alert("등록 OK");
+	    			location.reload();
+    			}
+    			else alert("등록 실패~~" + res);
     		},
     		error : function() {
-    			alert("전송오류!");
+    			alert("전송오류!(두번째 테이블을 확인해보세요)");
     		}
     	});
     }

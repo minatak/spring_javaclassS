@@ -7,10 +7,13 @@ import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.spring.javaclassS.vo.BicycleVO;
 import com.spring.javaclassS.vo.ChartVO;
 import com.spring.javaclassS.vo.CrimeVO;
+import com.spring.javaclassS.vo.ExchangeRateVO;
 import com.spring.javaclassS.vo.KakaoAddressVO;
 import com.spring.javaclassS.vo.QrCodeVO;
+import com.spring.javaclassS.vo.TagoExpressVO;
 import com.spring.javaclassS.vo.TransactionVO;
 import com.spring.javaclassS.vo.UserVO;
 
@@ -79,5 +82,19 @@ public interface StudyService {
 	public void setTransactionUser2Input(TransactionVO vo);
 
 	public int setTransactionUserTotalInput(TransactionVO vo);
+
+	public String getCurrencyRate(String receiveCountry, String searchdate);
+
+	public List<ExchangeRateVO> getExchangeRateUnit(String searchdate);
+
+	public String getCurrencyRateCompute(String receiveCountry, String sendAmount, String searchdate);
+
+	public List<BicycleVO> getBicycleData(int page);
+
+	public List<BicycleVO> getBicycleData2();
+
+	public List<TagoExpressVO> getTagoExpressData(int page);
+
+	public void getCalendar();
 
 }

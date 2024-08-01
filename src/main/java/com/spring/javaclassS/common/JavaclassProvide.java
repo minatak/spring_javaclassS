@@ -2,20 +2,15 @@ package com.spring.javaclassS.common;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +18,9 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.view.AbstractView;
 
 @Service
 public class JavaclassProvide {
@@ -59,20 +51,22 @@ public class JavaclassProvide {
 	}
 
 	// 파일 이름 변경하기(중복방지를 위한 작업)
-	public String saveFileName(String oFileName) {
-		String fileName = "";
+	public String saveFileName(String originalFilename) {
+//		String fileName = "";
+//		Calendar cal = Calendar.getInstance();
+//		fileName += cal.get(Calendar.YEAR);
+//		fileName += cal.get(Calendar.MONTH)+1;
+//		fileName += cal.get(Calendar.DATE);
+//		fileName += cal.get(Calendar.HOUR_OF_DAY);
+//		fileName += cal.get(Calendar.MINUTE);
+//		fileName += cal.get(Calendar.SECOND);
+//		fileName += cal.get(Calendar.MILLISECOND);
+//		fileName += "_" + originalFilename;
+		Date date = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+    String saveFileName = sdf.format(date) + "_" + originalFilename;
 		
-		Calendar cal = Calendar.getInstance();
-		fileName += cal.get(Calendar.YEAR);
-		fileName += cal.get(Calendar.MONTH)+1;
-		fileName += cal.get(Calendar.DATE);
-		fileName += cal.get(Calendar.HOUR_OF_DAY);
-		fileName += cal.get(Calendar.MINUTE);
-		fileName += cal.get(Calendar.SECOND);
-		//fileName += cal.get(Calendar.MILLISECOND);
-		fileName += "_" + oFileName;
-		
-		return fileName;
+		return saveFileName;
 	}
 
 	// 메일 전송하기(아이디찾기, 비밀번호 찾기, 스케줄러를 통한 메일 전송)
@@ -108,6 +102,7 @@ public class JavaclassProvide {
 		return "1";
 	}
 
+	// 파일명에 지정된 자리수만큼 난수를 붙여서 새로운 파일명으로 만들어 반환하기
 	public String newNameCreate(int len) {
 		Date today = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
@@ -116,5 +111,29 @@ public class JavaclassProvide {
 		return newName;
 	}
 	
+	// oriFilePath경로에 있는 파일을 copyFilePath경로로 복사시켜주기.
+  @SuppressWarnings("unused")
+	public void fileCopyCheck(String oriFilePath, String copyFilePath) {
+    File oriFile = new File(oriFilePath);
+    File copyFile = new File(copyFilePath);
+
+    try {
+      FileInputStream  fis = new FileInputStream(oriFile);
+      FileOutputStream fos = new FileOutputStream(copyFile);
+
+      byte[] buffer = new byte[2048];
+      int count = 0;
+      while((count = fis.read(buffer)) != -1) {
+        fos.write(buffer, 0, count);
+      }
+      fos.flush();
+      fos.close();
+      fis.close();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 	
 }

@@ -11,14 +11,14 @@
   <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
   <script>
     var IMP = window.IMP;
-    IMP.init("imp48776633"); // 고객사 식별코드 넣기
+    IMP.init("imp87432616");
 
     //function requestPay() {
       IMP.request_pay(
         {
-          pg: "html5_inicis.INIpayTest", // PG Provider.MID 넣으면 됨
+          pg: "html5_inicis.INIpayTest",
           pay_method: "card",
-          merchant_uid: "javaclassS16_" + new Date().getTime(), // 상점이름. 가져오는게 아니라 마음대로 쓰면 됨
+          merchant_uid: "javaclassS20_" + new Date().getTime(),
           name : "${vo.name}",
           amount : "${vo.amount}",
           buyer_email: "${vo.buyer_email}",
@@ -26,13 +26,13 @@
           buyer_tel: "${vo.buyer_tel}",
           buyer_addr: "${vo.buyer_addr}",
           buyer_postcode: "${vo.buyer_postcode}",
-        }, // 여기까지가 이니시스(결제대행사)에서 처리하는 작업
+        },
         function (rsp) {
           if(rsp.success) {
-        	  alert("결제가 완료 되었습니다.");
+        	  alert("결재가 완료 되었습니다.");
         	  location.href = '${ctp}/study/payment/paymentOk';
           } else {
-        	  alert("결제가 취소 되었습니다.");
+        	  alert("결재가 취소 되었습니다.");
         	  location.href = '${ctp}/study/payment/payment';
           }
         }

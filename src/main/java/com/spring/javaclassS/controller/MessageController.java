@@ -263,6 +263,46 @@ public class MessageController {
 			model.addAttribute("msg", "게시물이 삭제 실패~~");
 			model.addAttribute("url", "/photoGallery/photoGalleryList");
 		}
+		else if(msgFlag.equals("qnaInputOk")) {
+			model.addAttribute("msg", "QnA에 글이 등록 되었습니다.");
+			model.addAttribute("url", "/qna/qnaList");
+		}
+		else if(msgFlag.equals("qnaUpdateOk")) {
+			model.addAttribute("msg", "QnA에 글이 수정 되었습니다.");
+			model.addAttribute("url", "/qna/qnaList");
+		}
+		else if(msgFlag.equals("qnaDeleteOk")) {
+			model.addAttribute("msg", "QnA글이 삭제 되었습니다.");
+			model.addAttribute("url", "/qna/qnaList");
+		}
+		else if(msgFlag.equals("notifyInputOk")) {
+			model.addAttribute("msg", "공지사항이 저장되었습니다.");
+			model.addAttribute("url", "/notify/notifyList");
+		}
+		else if(msgFlag.equals("notifyUpdateOk")) {
+			model.addAttribute("msg", "공지사항이 수정되었습니다.");
+			model.addAttribute("url", "/notify/notifyList");
+		}
+		else if(msgFlag.equals("serveyInputOk")) {
+			model.addAttribute("msg", "설문지가 등록되었습니다.");
+			model.addAttribute("url", "/survey/surveyList");
+		}
+		else if(msgFlag.equals("serveyInputNo")) {
+			model.addAttribute("msg", "설문지가 등록 실패");
+			model.addAttribute("url", "/survey/surveyInput");
+		}
+		else if(msgFlag.equals("serveyAnswerInputOk")) {
+			model.addAttribute("msg", "설문 답변지가 등록 되었습니다.");
+			model.addAttribute("url", "/survey/surveyList");
+		}
+		else if(msgFlag.equals("serveyAnswerInputOk")) {
+			model.addAttribute("msg", "설문 답변지 등록 실패~");
+			model.addAttribute("url", "/survey/surveyAnswerInput");
+		}
+		else if(msgFlag.equals("surveyAnswerDeleteOk")) {
+			model.addAttribute("msg", "설문 답변지를 삭제했습니다.");
+			model.addAttribute("url", "/survey/surveyList?sdate="+tempFlag);
+		}
 		
 		return "include/message";
 	}

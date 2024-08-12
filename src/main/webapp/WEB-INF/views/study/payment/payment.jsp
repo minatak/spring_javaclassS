@@ -28,15 +28,15 @@
       </tr>
       <tr>
 	      <th>이메일</th>
-	      <td><input type="text" name="buyer_email" value="takmin0926@naver.com" class="form-control"/></td>
+	      <td><input type="text" name="buyer_email" value="cjsk1126@naver.com" class="form-control"/></td>
       </tr>
       <tr>
 	      <th>주문자</th>
-	      <td><input type="text" name="buyer_name" value="미나" class="form-control"/></td>
+	      <td><input type="text" name="buyer_name" value="행복천" class="form-control"/></td>
       </tr>
       <tr>
 	      <th>연락처</th>
-	      <td><input type="text" name="buyer_tel" value="010-0000-0000" class="form-control"/></td>
+	      <td><input type="text" name="buyer_tel" value="010-3423-2704" class="form-control"/></td>
       </tr>
       <tr>
 	      <th>주소</th>

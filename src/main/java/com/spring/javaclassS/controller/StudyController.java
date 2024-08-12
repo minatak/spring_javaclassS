@@ -33,7 +33,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.json.simple.JSONArray;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -90,6 +89,8 @@ import com.spring.javaclassS.vo.QrCodeVO;
 import com.spring.javaclassS.vo.TagoExpressVO;
 import com.spring.javaclassS.vo.TransactionVO;
 import com.spring.javaclassS.vo.UserVO;
+
+//import net.sf.json.JSONArray;
 
 @Controller
 @RequestMapping("/study")
@@ -1109,12 +1110,12 @@ public class StudyController {
 	}
 	
 	// 카카오맵 : 등록된 지명정보를 클러스터러 활용해서 상세보기
-	@RequestMapping(value = "/kakao/kakaoEx5", method = RequestMethod.GET)
-	public String kakaoEx5Get(Model model) {
-		List<KakaoAddressVO> vos = studyService.getKakaoAddressList();
-		model.addAttribute("jsonVos", JSONArray.fromObject(vos));
-		return "study/kakao/kakaoEx5";
-	}
+//	@RequestMapping(value = "/kakao/kakaoEx5", method = RequestMethod.GET)
+//	public String kakaoEx5Get(Model model) {
+//		List<KakaoAddressVO> vos = studyService.getKakaoAddressList();
+//		model.addAttribute("jsonVos", JSONArray.fromObject(vos));
+//		return "study/kakao/kakaoEx5";
+//	}
 	
 	// CSV파일을 MySQL파일로 변환하기폼보기
 	@RequestMapping(value = "/csv/csvForm", method = RequestMethod.GET)
